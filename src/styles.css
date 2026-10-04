@@ -1,0 +1,101 @@
+:root {
+  --fondo: #000000;
+  --azul: #1e90ff;
+  --verde: #39ff14;
+  --texto: #ffffff;
+  --texto-secundario: #d3d3d3;
+  --superficie: #0d0d0d;
+  --borde: #1f1f1f;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, .navbar-brand {
+  font-family: 'Orbitron', sans-serif;
+}
+
+p, .text-muted-gamer {
+  color: var(--texto-secundario);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.navbar-gamer {
+  background: var(--fondo);
+  border-bottom: 2px solid var(--azul);
+}
+
+.navbar-gamer .navbar-brand {
+  color: var(--verde);
+  letter-spacing: 1px;
+}
+
+.navbar-gamer .nav-link {
+  color: var(--texto);
+}
+
+.navbar-gamer .nav-link:hover,
+.navbar-gamer .nav-link.active {
+  color: var(--verde);
+}
+
+.btn-gamer {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: var(--texto);
+  font-weight: 500;
+}
+
+.btn-gamer:hover,
+.btn-gamer:focus {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: #000000;
+}
+
+.card-gamer {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.card-gamer:hover {
+  transform: translateY(-3px);
+  border-color: var(--azul);
+}
+
+.precio {
+  color: var(--verde);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+}
+
+.etiqueta-categoria {
+  color: var(--azul);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero {
+  padding: 64px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  color: var(--verde);
+}
+
+.form-select-gamer {
+  background-color: var(--superficie);
+  color: var(--texto);
+  border-color: var(--azul);
+}
