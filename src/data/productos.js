@@ -79,4 +79,12 @@ export const productos = [
     precio: 14990,
     descripcion: 'Una camiseta cómoda y estilizada, personalizable con tu gamer tag o diseño favorito.',
   },
+  {
+    codigo: 'ST001',
+    fabricante: 'Level-Up Gamer (servicio propio)',
+    categoria: 'Servicio Técnico',
+    nombre: 'Diagnóstico y mantención de PC gamer',
+    precio: 34990,
+    descripcion: 'Revisión completa de tu equipo, limpieza interna, cambio de pasta térmica y optimización. Precio de ejemplo.',
+  },
 ]

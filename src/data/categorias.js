@@ -8,4 +8,5 @@ export const categorias = [
   'Mousepad',
   'Poleras Personalizadas',
   'Polerones Gamers Personalizados',
+  'Servicio Técnico',
 ]

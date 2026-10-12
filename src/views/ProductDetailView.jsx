@@ -1,6 +1,7 @@
 import { Alert, Button } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
 import ReviewForm from '../components/ReviewForm'
+import ShareButtons from '../components/ShareButtons'
 import { productos } from '../data/productos'
 import { promedioPuntuacion, resenasDeProducto } from '../utils/resenas'
 
@@ -44,6 +45,8 @@ function ProductDetailView({
       <Button className="btn-gamer" onClick={() => onAgregar(producto)}>
         Agregar al carrito
       </Button>
+
+      <ShareButtons producto={producto} />
 
       <h2 className="mt-5">Reseñas</h2>
 
