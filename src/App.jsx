@@ -19,34 +19,41 @@ import {
   quitarDelCarrito,
 } from './utils/carrito'
 import {
+  guardarCarrito,
   guardarResenas,
   guardarSesion,
   guardarUsuarios,
+  leerCarrito,
   leerResenas,
   leerSesion,
   leerUsuarios,
 } from './utils/almacenamiento'
 import { agregarResena } from './utils/resenas'
-import { autenticar, crearUsuario } from './utils/usuarios'
+import { actualizarNombre, autenticar, crearUsuario } from './utils/usuarios'
 
 function App() {
-  const [carrito, setCarrito] = useState([])
+  const [carrito, setCarrito] = useState(leerCarrito)
   const [usuarios, setUsuarios] = useState(leerUsuarios)
   const [correoSesion, setCorreoSesion] = useState(leerSesion)
   const [resenas, setResenas] = useState(leerResenas)
 
   const usuario = usuarios.find((item) => item.correo === correoSesion) || null
 
+  function actualizarCarrito(nuevoCarrito) {
+    setCarrito(nuevoCarrito)
+    guardarCarrito(nuevoCarrito)
+  }
+
   function agregar(producto) {
-    setCarrito(agregarAlCarrito(carrito, producto))
+    actualizarCarrito(agregarAlCarrito(carrito, producto))
   }
 
   function quitar(codigo) {
-    setCarrito(quitarDelCarrito(carrito, codigo))
+    actualizarCarrito(quitarDelCarrito(carrito, codigo))
   }
 
   function modificarCantidad(codigo, cantidad) {
-    setCarrito(cambiarCantidad(carrito, codigo, cantidad))
+    actualizarCarrito(cambiarCantidad(carrito, codigo, cantidad))
   }
 
   function registrar(datos) {
@@ -95,6 +102,12 @@ function App() {
     return resultado
   }
 
+  function actualizarPerfil(nombre) {
+    const lista = actualizarNombre(usuarios, usuario.correo, nombre)
+    setUsuarios(lista)
+    guardarUsuarios(lista)
+  }
+
   function cerrarSesion() {
     setCorreoSesion(null)
     guardarSesion(null)
@@ -125,13 +138,20 @@ function App() {
           <Route path="/login" element={<LoginView onIniciarSesion={iniciarSesion} />} />
           <Route
             path="/perfil"
-            element={<ProfileView usuario={usuario} onCerrarSesion={cerrarSesion} />}
+            element={
+              <ProfileView
+                usuario={usuario}
+                onCerrarSesion={cerrarSesion}
+                onActualizarNombre={actualizarPerfil}
+              />
+            }
           />
           <Route
             path="/carrito"
             element={
               <CartView
                 carrito={carrito}
+                descuento={usuario ? usuario.descuento : 0}
                 onQuitar={quitar}
                 onCambiarCantidad={modificarCantidad}
               />

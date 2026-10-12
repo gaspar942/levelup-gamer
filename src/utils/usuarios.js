@@ -59,3 +59,9 @@ export function nivelPorPuntos(puntos) {
   if (puntos >= 200) return 'Plata'
   return 'Bronce'
 }
+
+export function actualizarNombre(usuarios, correo, nombre) {
+  return usuarios.map((usuario) =>
+    usuario.correo === correo ? { ...usuario, nombre: nombre.trim() } : usuario
+  )
+}

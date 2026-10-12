@@ -1,8 +1,8 @@
 import { Button, Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { calcularTotal } from '../utils/carrito'
+import { aplicarDescuento, calcularTotal } from '../utils/carrito'
 
-function CartView({ carrito, onQuitar, onCambiarCantidad }) {
+function CartView({ carrito, descuento = 0, onQuitar, onCambiarCantidad }) {
   if (carrito.length === 0) {
     return (
       <section>
@@ -14,6 +14,9 @@ function CartView({ carrito, onQuitar, onCambiarCantidad }) {
       </section>
     )
   }
+
+  const subtotal = calcularTotal(carrito)
+  const { monto, totalFinal } = aplicarDescuento(subtotal, descuento)
 
   return (
     <section>
@@ -70,9 +73,17 @@ function CartView({ carrito, onQuitar, onCambiarCantidad }) {
         </tbody>
       </Table>
 
-      <h4 className="text-end">
-        Total: <span className="precio">${calcularTotal(carrito).toLocaleString('es-CL')} CLP</span>
-      </h4>
+      <div className="text-end">
+        <p className="mb-1">Subtotal: ${subtotal.toLocaleString('es-CL')} CLP</p>
+        {monto > 0 && (
+          <p className="mb-1">
+            Descuento Duoc ({Math.round(descuento * 100)}%): -${monto.toLocaleString('es-CL')} CLP
+          </p>
+        )}
+        <h4>
+          Total: <span className="precio">${totalFinal.toLocaleString('es-CL')} CLP</span>
+        </h4>
+      </div>
     </section>
   )
 }

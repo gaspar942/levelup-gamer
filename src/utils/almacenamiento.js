@@ -40,3 +40,13 @@ export function guardarSesion(correo) {
     sessionStorage.removeItem(CLAVE_SESION)
   }
 }
+
+const CLAVE_CARRITO = 'levelup_carrito'
+
+export function leerCarrito() {
+  return leerLista(CLAVE_CARRITO)
+}
+
+export function guardarCarrito(carrito) {
+  localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito))
+}

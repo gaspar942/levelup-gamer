@@ -35,3 +35,8 @@ export function contarItems(carrito) {
 export function calcularTotal(carrito) {
   return carrito.reduce((total, item) => total + item.precio * item.cantidad, 0)
 }
+
+export function aplicarDescuento(total, porcentaje) {
+  const monto = Math.round(total * porcentaje)
+  return { monto, totalFinal: total - monto }
+}
