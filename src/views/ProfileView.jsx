@@ -1,21 +1,21 @@
 import { useState } from 'react'
 import { Alert, Button, Card, Form } from 'react-bootstrap'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { nivelPorPuntos } from '../utils/usuarios'
 
 function ProfileView({ usuario, onCerrarSesion, onActualizarNombre = () => {} }) {
-  const navigate = useNavigate()
   const [nombre, setNombre] = useState(usuario ? usuario.nombre : '')
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
+  const [cerrando, setCerrando] = useState(false)
 
   if (!usuario) {
-    return <Navigate to="/login" replace />
+    return <Navigate to={cerrando ? '/' : '/login'} replace />
   }
 
   function salir() {
+    setCerrando(true)
     onCerrarSesion()
-    navigate('/')
   }
 
   function guardar(event) {
