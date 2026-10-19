@@ -60,3 +60,34 @@ export function leerOrdenes() {
 export function guardarOrdenes(ordenes) {
   localStorage.setItem(CLAVE_ORDENES, JSON.stringify(ordenes))
 }
+
+// Catálogo editable. A diferencia de las otras listas, si no hay nada guardado
+// (o está dañado) devuelve null, para que la app use los datos de src/data.
+// Así una lista vacía guardada a propósito no se confunde con "nunca se guardó".
+const CLAVE_PRODUCTOS = 'levelup_productos'
+const CLAVE_CATEGORIAS = 'levelup_categorias'
+
+function leerListaGuardada(clave) {
+  try {
+    const lista = JSON.parse(localStorage.getItem(clave))
+    return Array.isArray(lista) ? lista : null
+  } catch {
+    return null
+  }
+}
+
+export function leerProductos() {
+  return leerListaGuardada(CLAVE_PRODUCTOS)
+}
+
+export function guardarProductos(productos) {
+  localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(productos))
+}
+
+export function leerCategorias() {
+  return leerListaGuardada(CLAVE_CATEGORIAS)
+}
+
+export function guardarCategorias(categorias) {
+  localStorage.setItem(CLAVE_CATEGORIAS, JSON.stringify(categorias))
+}

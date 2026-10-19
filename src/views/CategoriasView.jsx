@@ -1,11 +1,11 @@
 import { Badge, Button, Col, Row } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
-import { categorias } from '../data/categorias'
-import { productos } from '../data/productos'
+import { categorias as categoriasBase } from '../data/categorias'
+import { productos as productosBase } from '../data/productos'
 import { filtrarProductos } from '../utils/filtros'
 
-function CategoriasView({ onAgregar }) {
+function CategoriasView({ productos = productosBase, categorias = categoriasBase, onAgregar }) {
   const { nombre } = useParams()
   const existe = categorias.includes(nombre)
   const productosCategoria = existe ? filtrarProductos(productos, { categoria: nombre }) : []

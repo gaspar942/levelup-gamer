@@ -23,6 +23,8 @@ import {
   contarItems,
   quitarDelCarrito,
 } from './utils/carrito'
+import { categorias as categoriasBase } from './data/categorias'
+import { productos as productosBase } from './data/productos'
 import {
   guardarCarrito,
   guardarOrdenes,
@@ -30,7 +32,9 @@ import {
   guardarSesion,
   guardarUsuarios,
   leerCarrito,
+  leerCategorias,
   leerOrdenes,
+  leerProductos,
   leerResenas,
   leerSesion,
   leerUsuarios,
@@ -46,6 +50,9 @@ function App() {
   const [correoSesion, setCorreoSesion] = useState(leerSesion)
   const [resenas, setResenas] = useState(leerResenas)
   const [ordenes, setOrdenes] = useState(leerOrdenes)
+  // El catálogo sale de lo guardado y, si no hay nada, de los datos base de src/data.
+  const [productos] = useState(() => leerProductos() || productosBase)
+  const [categorias] = useState(() => leerCategorias() || categoriasBase)
 
   const usuario = usuarios.find((item) => item.correo === correoSesion) || null
   const descuento = usuario ? usuario.descuento : 0
@@ -153,11 +160,17 @@ function App() {
       <Container className="py-4">
         <Routes>
           <Route path="/" element={<HomeView />} />
-          <Route path="/productos" element={<ProductsView onAgregar={agregar} />} />
+          <Route
+            path="/productos"
+            element={
+              <ProductsView productos={productos} categorias={categorias} onAgregar={agregar} />
+            }
+          />
           <Route
             path="/producto/:codigo"
             element={
               <ProductDetailView
+                productos={productos}
                 onAgregar={agregar}
                 usuario={usuario}
                 resenas={resenas}
@@ -165,8 +178,13 @@ function App() {
               />
             }
           />
-          <Route path="/categorias/:nombre?" element={<CategoriasView onAgregar={agregar} />} />
-          <Route path="/ofertas" element={<OfertasView onAgregar={agregar} />} />
+          <Route
+            path="/categorias/:nombre?"
+            element={
+              <CategoriasView productos={productos} categorias={categorias} onAgregar={agregar} />
+            }
+          />
+          <Route path="/ofertas" element={<OfertasView productos={productos} onAgregar={agregar} />} />
           <Route path="/blog" element={<BlogView />} />
           <Route path="/eventos" element={<EventsView />} />
           <Route path="/registro" element={<RegisterView onRegistrar={registrar} />} />

@@ -1,8 +1,8 @@
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
-import { categorias } from '../data/categorias'
-import { productos } from '../data/productos'
+import { categorias as categoriasBase } from '../data/categorias'
+import { productos as productosBase } from '../data/productos'
 import { filtrarProductos } from '../utils/filtros'
 
 const opcionesPrecio = [
@@ -12,7 +12,7 @@ const opcionesPrecio = [
   { valor: '1500000', texto: 'Hasta $1.500.000' },
 ]
 
-function ProductsView({ onAgregar }) {
+function ProductsView({ productos = productosBase, categorias = categoriasBase, onAgregar }) {
   const [params, setParams] = useSearchParams()
 
   const categoria = params.get('categoria') || 'Todas'

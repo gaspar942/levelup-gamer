@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import PrecioProducto from '../components/PrecioProducto'
 import ReviewForm from '../components/ReviewForm'
 import ShareButtons from '../components/ShareButtons'
-import { productos } from '../data/productos'
+import { productos as productosBase } from '../data/productos'
 import { promedioPuntuacion, resenasDeProducto } from '../utils/resenas'
 
 function estrellas(puntuacion) {
@@ -11,6 +11,7 @@ function estrellas(puntuacion) {
 }
 
 function ProductDetailView({
+  productos = productosBase,
   onAgregar,
   usuario = null,
   resenas = [],

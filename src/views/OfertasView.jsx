@@ -1,9 +1,9 @@
 import { Col, Row } from 'react-bootstrap'
 import ProductCard from '../components/ProductCard'
-import { productos } from '../data/productos'
+import { productos as productosBase } from '../data/productos'
 import { productosConOferta } from '../utils/ofertas'
 
-function OfertasView({ onAgregar }) {
+function OfertasView({ productos = productosBase, onAgregar }) {
   const enOferta = productosConOferta(productos)
 
   return (
