@@ -1,3 +1,5 @@
+import { FaWhatsapp } from 'react-icons/fa'
+
 // Cambia este número por el de soporte técnico (formato internacional, sin +).
 export const NUMERO_SOPORTE = '56912345678'
 
@@ -12,21 +14,26 @@ function WhatsAppButton() {
       target="_blank"
       rel="noreferrer"
       aria-label="Contactar soporte técnico por WhatsApp"
+      title="Soporte WhatsApp"
       style={{
         position: 'fixed',
-        right: 20,
-        bottom: 20,
+        right: 14,
+        bottom: 14,
         zIndex: 1050,
-        background: '#39ff14',
-        color: '#000000',
-        fontWeight: 700,
-        padding: '12px 18px',
-        borderRadius: 999,
+        width: 52,
+        height: 52,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#25d366',
+        color: '#ffffff',
+        fontSize: 30,
+        borderRadius: '50%',
         textDecoration: 'none',
-        boxShadow: '0 0 12px rgba(57, 255, 20, 0.6)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
       }}
     >
-      Soporte WhatsApp
+      <FaWhatsapp aria-hidden="true" />
     </a>
   )
 }
