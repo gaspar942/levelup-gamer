@@ -1,5 +1,6 @@
 import { Alert, Button } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
+import PrecioProducto from '../components/PrecioProducto'
 import ReviewForm from '../components/ReviewForm'
 import ShareButtons from '../components/ShareButtons'
 import { productos } from '../data/productos'
@@ -39,7 +40,7 @@ function ProductDetailView({
       {producto.fabricante && <p>Fabricante: {producto.fabricante}</p>}
       <p>{producto.descripcion}</p>
       <p className="precio fs-4">
-        ${producto.precio.toLocaleString('es-CL')} CLP
+        <PrecioProducto producto={producto} />
       </p>
 
       <Button className="btn-gamer" onClick={() => onAgregar(producto)}>
