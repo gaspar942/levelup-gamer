@@ -83,6 +83,9 @@ function CartView({ carrito, descuento = 0, onQuitar, onCambiarCantidad }) {
         <h4>
           Total: <span className="precio">${totalFinal.toLocaleString('es-CL')} CLP</span>
         </h4>
+        <Button as={Link} to="/checkout" className="btn-gamer mt-2">
+          Ir a pagar
+        </Button>
       </div>
     </section>
   )

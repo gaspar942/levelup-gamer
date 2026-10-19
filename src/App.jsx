@@ -7,6 +7,9 @@ import HomeView from './views/HomeView'
 import ProductsView from './views/ProductsView'
 import ProductDetailView from './views/ProductDetailView'
 import CartView from './views/CartView'
+import CheckoutView from './views/CheckoutView'
+import CompraExitosaView from './views/CompraExitosaView'
+import PagoErrorView from './views/PagoErrorView'
 import BlogView from './views/BlogView'
 import EventsView from './views/EventsView'
 import RegisterView from './views/RegisterView'
@@ -20,14 +23,17 @@ import {
 } from './utils/carrito'
 import {
   guardarCarrito,
+  guardarOrdenes,
   guardarResenas,
   guardarSesion,
   guardarUsuarios,
   leerCarrito,
+  leerOrdenes,
   leerResenas,
   leerSesion,
   leerUsuarios,
 } from './utils/almacenamiento'
+import { crearOrden, procesarPago } from './utils/checkout'
 import { agregarResena } from './utils/resenas'
 import { actualizarNombre, autenticar, crearUsuario } from './utils/usuarios'
 
@@ -36,8 +42,10 @@ function App() {
   const [usuarios, setUsuarios] = useState(leerUsuarios)
   const [correoSesion, setCorreoSesion] = useState(leerSesion)
   const [resenas, setResenas] = useState(leerResenas)
+  const [ordenes, setOrdenes] = useState(leerOrdenes)
 
   const usuario = usuarios.find((item) => item.correo === correoSesion) || null
+  const descuento = usuario ? usuario.descuento : 0
 
   function actualizarCarrito(nuevoCarrito) {
     setCarrito(nuevoCarrito)
@@ -54,6 +62,27 @@ function App() {
 
   function modificarCantidad(codigo, cantidad) {
     actualizarCarrito(cambiarCantidad(carrito, codigo, cantidad))
+  }
+
+  // Registra la orden (pagada o rechazada). El carrito solo se vacía si el pago salió bien.
+  function pagar(datos) {
+    const orden = crearOrden({
+      carrito,
+      datos,
+      descuento,
+      ordenes,
+      resultadoPago: procesarPago(),
+    })
+    const lista = [...ordenes, orden]
+
+    setOrdenes(lista)
+    guardarOrdenes(lista)
+
+    if (orden.estado === 'pagada') {
+      actualizarCarrito([])
+    }
+
+    return orden
   }
 
   function registrar(datos) {
@@ -151,12 +180,28 @@ function App() {
             element={
               <CartView
                 carrito={carrito}
-                descuento={usuario ? usuario.descuento : 0}
+                descuento={descuento}
                 onQuitar={quitar}
                 onCambiarCantidad={modificarCantidad}
               />
             }
           />
+          <Route
+            path="/checkout"
+            element={
+              <CheckoutView
+                carrito={carrito}
+                descuento={descuento}
+                usuario={usuario}
+                onPagar={pagar}
+              />
+            }
+          />
+          <Route
+            path="/compra-exitosa/:numero"
+            element={<CompraExitosaView ordenes={ordenes} />}
+          />
+          <Route path="/pago-error/:numero" element={<PagoErrorView ordenes={ordenes} />} />
         </Routes>
       </Container>
 

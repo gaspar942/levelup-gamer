@@ -50,3 +50,13 @@ export function leerCarrito() {
 export function guardarCarrito(carrito) {
   localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito))
 }
+
+const CLAVE_ORDENES = 'levelup_ordenes'
+
+export function leerOrdenes() {
+  return leerLista(CLAVE_ORDENES)
+}
+
+export function guardarOrdenes(ordenes) {
+  localStorage.setItem(CLAVE_ORDENES, JSON.stringify(ordenes))
+}
