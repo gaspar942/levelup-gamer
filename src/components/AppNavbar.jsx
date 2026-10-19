@@ -1,5 +1,6 @@
 import { Badge, Container, Nav, Navbar } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
+import { esAdministrador } from '../utils/administrador'
 
 function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
   return (
@@ -22,6 +23,9 @@ function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
           </Nav>
 
           <Nav>
+            {esAdministrador(usuario) && (
+              <Nav.Link as={NavLink} to="/admin">Administración</Nav.Link>
+            )}
             {usuario ? (
               <Nav.Link as={NavLink} to="/perfil">{usuario.nombre}</Nav.Link>
             ) : (

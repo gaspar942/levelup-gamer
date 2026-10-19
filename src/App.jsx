@@ -17,6 +17,11 @@ import EventsView from './views/EventsView'
 import RegisterView from './views/RegisterView'
 import LoginView from './views/LoginView'
 import ProfileView from './views/ProfileView'
+import AdminLayout from './views/admin/AdminLayout'
+import AdminDashboardView from './views/admin/AdminDashboardView'
+import AdminProductosView from './views/admin/AdminProductosView'
+import AdminProductoFormView from './views/admin/AdminProductoFormView'
+import AdminCategoriasView from './views/admin/AdminCategoriasView'
 import {
   agregarAlCarrito,
   cambiarCantidad,
@@ -27,7 +32,9 @@ import { categorias as categoriasBase } from './data/categorias'
 import { productos as productosBase } from './data/productos'
 import {
   guardarCarrito,
+  guardarCategorias,
   guardarOrdenes,
+  guardarProductos,
   guardarResenas,
   guardarSesion,
   guardarUsuarios,
@@ -39,6 +46,15 @@ import {
   leerSesion,
   leerUsuarios,
 } from './utils/almacenamiento'
+import { buscarUsuarioSesion, autenticarAdministrador, correoReservado } from './utils/administrador'
+import {
+  actualizarProducto,
+  crearCategoria,
+  crearProducto,
+  eliminarCategoria,
+  eliminarProducto,
+  renombrarCategoria,
+} from './utils/catalogo'
 import { crearOrden, procesarPago } from './utils/checkout'
 import { aplicarOferta } from './utils/ofertas'
 import { agregarResena } from './utils/resenas'
@@ -51,10 +67,10 @@ function App() {
   const [resenas, setResenas] = useState(leerResenas)
   const [ordenes, setOrdenes] = useState(leerOrdenes)
   // El catálogo sale de lo guardado y, si no hay nada, de los datos base de src/data.
-  const [productos] = useState(() => leerProductos() || productosBase)
-  const [categorias] = useState(() => leerCategorias() || categoriasBase)
+  const [productos, setProductos] = useState(() => leerProductos() || productosBase)
+  const [categorias, setCategorias] = useState(() => leerCategorias() || categoriasBase)
 
-  const usuario = usuarios.find((item) => item.correo === correoSesion) || null
+  const usuario = buscarUsuarioSesion(usuarios, correoSesion)
   const descuento = usuario ? usuario.descuento : 0
 
   function actualizarCarrito(nuevoCarrito) {
@@ -96,7 +112,84 @@ function App() {
     return orden
   }
 
+  // Guarda los cambios del catálogo en el estado y en el almacenamiento.
+  function actualizarCatalogo(nuevosProductos, nuevasCategorias) {
+    if (nuevosProductos) {
+      setProductos(nuevosProductos)
+      guardarProductos(nuevosProductos)
+    }
+
+    if (nuevasCategorias) {
+      setCategorias(nuevasCategorias)
+      guardarCategorias(nuevasCategorias)
+    }
+  }
+
+  function altaProducto(datos) {
+    const resultado = crearProducto(productos, categorias, datos)
+
+    if (!resultado.error) {
+      actualizarCatalogo(resultado.productos)
+    }
+
+    return resultado
+  }
+
+  function modificarProducto(codigo, cambios) {
+    const resultado = actualizarProducto(productos, categorias, codigo, cambios)
+
+    if (!resultado.error) {
+      actualizarCatalogo(resultado.productos)
+    }
+
+    return resultado
+  }
+
+  function bajaProducto(codigo) {
+    const resultado = eliminarProducto(productos, codigo)
+
+    if (!resultado.error) {
+      actualizarCatalogo(resultado.productos)
+    }
+
+    return resultado
+  }
+
+  function altaCategoria(nombre) {
+    const resultado = crearCategoria(categorias, nombre)
+
+    if (!resultado.error) {
+      actualizarCatalogo(null, resultado.categorias)
+    }
+
+    return resultado
+  }
+
+  function cambiarNombreCategoria(actual, nuevo) {
+    const resultado = renombrarCategoria(categorias, productos, actual, nuevo)
+
+    if (!resultado.error) {
+      actualizarCatalogo(resultado.productos, resultado.categorias)
+    }
+
+    return resultado
+  }
+
+  function bajaCategoria(nombre) {
+    const resultado = eliminarCategoria(categorias, productos, nombre)
+
+    if (!resultado.error) {
+      actualizarCatalogo(null, resultado.categorias)
+    }
+
+    return resultado
+  }
+
   function registrar(datos) {
+    if (correoReservado(datos.correo)) {
+      return { error: 'Ese correo ya está registrado.' }
+    }
+
     const resultado = crearUsuario(usuarios, datos)
 
     if (!resultado.error) {
@@ -108,7 +201,8 @@ function App() {
   }
 
   function iniciarSesion(correo, contrasena) {
-    const encontrado = autenticar(usuarios, correo, contrasena)
+    const encontrado =
+      autenticarAdministrador(correo, contrasena) || autenticar(usuarios, correo, contrasena)
 
     if (!encontrado) {
       return false
@@ -226,6 +320,53 @@ function App() {
             element={<CompraExitosaView ordenes={ordenes} />}
           />
           <Route path="/pago-error/:numero" element={<PagoErrorView ordenes={ordenes} />} />
+          <Route
+            path="/admin"
+            element={<AdminLayout usuario={usuario} onCerrarSesion={cerrarSesion} />}
+          >
+            <Route
+              index
+              element={
+                <AdminDashboardView productos={productos} usuarios={usuarios} ordenes={ordenes} />
+              }
+            />
+            <Route
+              path="productos"
+              element={<AdminProductosView productos={productos} onEliminar={bajaProducto} />}
+            />
+            <Route
+              path="productos/nuevo"
+              element={
+                <AdminProductoFormView
+                  productos={productos}
+                  categorias={categorias}
+                  onCrear={altaProducto}
+                />
+              }
+            />
+            <Route
+              path="productos/:codigo"
+              element={
+                <AdminProductoFormView
+                  productos={productos}
+                  categorias={categorias}
+                  onEditar={modificarProducto}
+                />
+              }
+            />
+            <Route
+              path="categorias"
+              element={
+                <AdminCategoriasView
+                  categorias={categorias}
+                  productos={productos}
+                  onCrear={altaCategoria}
+                  onRenombrar={cambiarNombreCategoria}
+                  onEliminar={bajaCategoria}
+                />
+              }
+            />
+          </Route>
         </Routes>
       </Container>
 
