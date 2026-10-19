@@ -15,6 +15,8 @@ function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/">Inicio</Nav.Link>
             <Nav.Link as={NavLink} to="/productos">Productos</Nav.Link>
+            <Nav.Link as={NavLink} to="/categorias">Categorías</Nav.Link>
+            <Nav.Link as={NavLink} to="/ofertas">Ofertas</Nav.Link>
             <Nav.Link as={NavLink} to="/blog">Blog</Nav.Link>
             <Nav.Link as={NavLink} to="/eventos">Eventos</Nav.Link>
           </Nav>

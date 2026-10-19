@@ -1,7 +1,10 @@
-import { Button, Card } from 'react-bootstrap'
+import { Badge, Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { aplicarOferta } from '../utils/ofertas'
 
 function ProductCard({ producto, onAgregar }) {
+  const conOferta = aplicarOferta(producto)
+
   function agregar() {
     if (onAgregar) {
       onAgregar(producto)
@@ -17,7 +20,17 @@ function ProductCard({ producto, onAgregar }) {
 
         <div className="mt-auto">
           <p className="precio mb-2">
-            ${producto.precio.toLocaleString('es-CL')} CLP
+            {conOferta.precioOriginal !== undefined && (
+              <>
+                <s className="text-secondary me-2">
+                  {`$${conOferta.precioOriginal.toLocaleString('es-CL')}`}
+                </s>
+                <Badge bg="danger" className="me-2">
+                  {`-${conOferta.porcentajeOferta}%`}
+                </Badge>
+              </>
+            )}
+            ${conOferta.precio.toLocaleString('es-CL')} CLP
           </p>
           <div className="d-flex gap-2 flex-wrap">
             <Button className="btn-gamer" onClick={agregar}>

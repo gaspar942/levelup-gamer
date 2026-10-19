@@ -7,6 +7,8 @@ import HomeView from './views/HomeView'
 import ProductsView from './views/ProductsView'
 import ProductDetailView from './views/ProductDetailView'
 import CartView from './views/CartView'
+import CategoriasView from './views/CategoriasView'
+import OfertasView from './views/OfertasView'
 import CheckoutView from './views/CheckoutView'
 import CompraExitosaView from './views/CompraExitosaView'
 import PagoErrorView from './views/PagoErrorView'
@@ -34,6 +36,7 @@ import {
   leerUsuarios,
 } from './utils/almacenamiento'
 import { crearOrden, procesarPago } from './utils/checkout'
+import { aplicarOferta } from './utils/ofertas'
 import { agregarResena } from './utils/resenas'
 import { actualizarNombre, autenticar, crearUsuario } from './utils/usuarios'
 
@@ -52,8 +55,9 @@ function App() {
     guardarCarrito(nuevoCarrito)
   }
 
+  // Si el producto tiene oferta, entra al carrito con el precio rebajado, se agregue desde donde se agregue.
   function agregar(producto) {
-    actualizarCarrito(agregarAlCarrito(carrito, producto))
+    actualizarCarrito(agregarAlCarrito(carrito, aplicarOferta(producto)))
   }
 
   function quitar(codigo) {
@@ -161,6 +165,8 @@ function App() {
               />
             }
           />
+          <Route path="/categorias/:nombre?" element={<CategoriasView onAgregar={agregar} />} />
+          <Route path="/ofertas" element={<OfertasView onAgregar={agregar} />} />
           <Route path="/blog" element={<BlogView />} />
           <Route path="/eventos" element={<EventsView />} />
           <Route path="/registro" element={<RegisterView onRegistrar={registrar} />} />
