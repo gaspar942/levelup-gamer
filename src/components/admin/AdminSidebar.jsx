@@ -6,6 +6,7 @@ const secciones = [
   { ruta: '/admin/ordenes', texto: 'Órdenes' },
   { ruta: '/admin/productos', texto: 'Productos', exacta: true },
   { ruta: '/admin/productos/criticos', texto: 'Productos críticos' },
+  { ruta: '/admin/productos/reportes', texto: 'Reporte de productos' },
   { ruta: '/admin/categorias', texto: 'Categorías' },
   { ruta: '/admin/usuarios', texto: 'Usuarios' },
   { ruta: '/admin/reportes', texto: 'Reportes' },

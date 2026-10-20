@@ -32,9 +32,12 @@ import AdminUsuarioFormView from './views/admin/AdminUsuarioFormView'
 import AdminUsuarioComprasView from './views/admin/AdminUsuarioComprasView'
 import AdminCriticosView from './views/admin/AdminCriticosView'
 import AdminReportesView from './views/admin/AdminReportesView'
+import AdminReporteProductosView from './views/admin/AdminReporteProductosView'
 import AdminPerfilView from './views/admin/AdminPerfilView'
 import {
   agregarAlCarrito,
+  aplicarDescuento,
+  calcularTotal,
   cambiarCantidad,
   contarItems,
   quitarDelCarrito,
@@ -84,6 +87,7 @@ function App() {
 
   const usuario = buscarUsuarioSesion(usuarios, correoSesion)
   const descuento = usuario ? usuario.descuento : 0
+  const totalCarrito = aplicarDescuento(calcularTotal(carrito), descuento || 0).totalFinal
 
   function actualizarCarrito(nuevoCarrito) {
     setCarrito(nuevoCarrito)
@@ -284,7 +288,11 @@ function App() {
 
   return (
     <div className="app-shell">
-      <AppNavbar cantidadCarrito={contarItems(carrito)} usuario={usuario} />
+      <AppNavbar
+        cantidadCarrito={contarItems(carrito)}
+        totalCarrito={totalCarrito}
+        usuario={usuario}
+      />
 
       <Container className="py-4">
         <Routes>
@@ -422,6 +430,10 @@ function App() {
             <Route
               path="usuarios/:correo/compras"
               element={<AdminUsuarioComprasView usuarios={usuarios} ordenes={ordenes} />}
+            />
+            <Route
+              path="productos/reportes"
+              element={<AdminReporteProductosView ordenes={ordenes} productos={productos} />}
             />
             <Route
               path="reportes"

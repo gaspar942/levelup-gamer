@@ -1,10 +1,27 @@
-import { Badge, Container, Nav, Navbar } from 'react-bootstrap'
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Badge, Button, Container, Form, Nav, Navbar } from 'react-bootstrap'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { esAdministrador } from '../utils/administrador'
 
-function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
+function formatoPesos(valor) {
+  return `$${valor.toLocaleString('es-CL')}`
+}
+
+function AppNavbar({ cantidadCarrito = 0, totalCarrito = 0, usuario = null }) {
+  const [busqueda, setBusqueda] = useState('')
+  const navigate = useNavigate()
+
+  // Lleva la búsqueda al catálogo: ProductsView la lee del parámetro q.
+  function buscar(event) {
+    event.preventDefault()
+
+    const texto = busqueda.trim()
+
+    navigate({ pathname: '/productos', search: texto ? `?q=${encodeURIComponent(texto)}` : '' })
+  }
+
   return (
-    <Navbar className="navbar-gamer" data-bs-theme="dark" expand="lg">
+    <Navbar className="navbar-gamer" data-bs-theme="dark" expand="xl">
       <Container>
         <Navbar.Brand as={NavLink} to="/">
           LEVEL-UP GAMER
@@ -13,6 +30,20 @@ function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
         <Navbar.Toggle aria-controls="menu-principal" />
 
         <Navbar.Collapse id="menu-principal">
+          <Form className="d-flex gap-2 my-2 my-xl-0 me-xl-3" role="search" onSubmit={buscar}>
+            <Form.Control
+              type="search"
+              size="sm"
+              placeholder="Buscar productos"
+              aria-label="Buscar en la tienda"
+              value={busqueda}
+              onChange={(event) => setBusqueda(event.target.value)}
+            />
+            <Button type="submit" size="sm" variant="outline-success">
+              Buscar
+            </Button>
+          </Form>
+
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/">Inicio</Nav.Link>
             <Nav.Link as={NavLink} to="/productos">Productos</Nav.Link>
@@ -38,6 +69,7 @@ function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
             )}
             <Nav.Link as={NavLink} to="/carrito">
               Carrito{' '}
+              <span className="monto-carrito">{formatoPesos(totalCarrito)}</span>{' '}
               <Badge bg="success" pill>{cantidadCarrito}</Badge>
             </Nav.Link>
           </Nav>

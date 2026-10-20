@@ -1,9 +1,24 @@
-import { Button, Card, Col, Row } from 'react-bootstrap'
+import { Button, Card, Carousel, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { banners } from '../data/banners'
 
 function HomeView() {
   return (
     <>
+      <Carousel className="carousel-gamer mb-4">
+        {banners.map((banner) => (
+          <Carousel.Item key={banner.id}>
+            <div className="banner-gamer">
+              <h2 className="h3">{banner.titulo}</h2>
+              <p className="mb-2">{banner.texto}</p>
+              <Button as={Link} to={banner.ruta} className="btn-gamer">
+                {banner.boton}
+              </Button>
+            </div>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+
       <section className="hero">
         <h1>Desafía tus límites con Level-Up Gamer</h1>
         <p className="my-3">

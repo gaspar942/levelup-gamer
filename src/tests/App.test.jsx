@@ -61,7 +61,7 @@ test('flujo completo: registrarse, iniciar sesión y cerrar sesión', () => {
   fireEvent.click(screen.getByText('Ingresar'))
   fireEvent.change(screen.getByLabelText(/correo/i), { target: { value: 'ana@duocuc.cl' } })
   fireEvent.change(screen.getByLabelText(/contraseña/i), { target: { value: 'secreta1' } })
-  fireEvent.click(document.querySelector('button[type="submit"]'))
+  fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
 
   expect(screen.getByRole('heading', { name: 'Mi perfil' })).toBeInTheDocument()
 

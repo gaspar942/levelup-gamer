@@ -1,5 +1,6 @@
 // Cifras para el panel de reportes. Solo cuentan las órdenes pagadas.
 // Son funciones puras: reciben las órdenes y los productos por parámetro.
+import { stockDe } from './inventario'
 
 export function ordenesPagadas(ordenes) {
   return ordenes.filter((orden) => orden.estado === 'pagada')
@@ -52,4 +53,25 @@ export function ventasPorCategoria(ordenes, productos) {
   })
 
   return [...mapa.values()].sort((a, b) => b.ingresos - a.ingresos)
+}
+
+// Una fila por producto del catálogo con su stock y lo vendido (solo órdenes pagadas).
+// Los productos sin ventas quedan al final, ordenados por nombre.
+export function reporteProductos(ordenes, productos) {
+  const vendidos = new Map(ventasPorProducto(ordenes).map((venta) => [venta.codigo, venta]))
+
+  return productos
+    .map((producto) => {
+      const venta = vendidos.get(producto.codigo)
+
+      return {
+        codigo: producto.codigo,
+        nombre: producto.nombre,
+        categoria: producto.categoria,
+        stock: stockDe(producto),
+        unidades: venta ? venta.unidades : 0,
+        ingresos: venta ? venta.ingresos : 0,
+      }
+    })
+    .sort((a, b) => b.unidades - a.unidades || a.nombre.localeCompare(b.nombre))
 }
