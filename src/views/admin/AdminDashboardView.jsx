@@ -39,6 +39,18 @@ function AdminDashboardView({ productos = [], usuarios = [], ordenes = [] }) {
         <Button as={Link} to="/admin/categorias" variant="outline-light">
           Administrar categorías
         </Button>
+        <Button as={Link} to="/admin/ordenes" variant="outline-light">
+          Ver órdenes
+        </Button>
+        <Button as={Link} to="/admin/usuarios" variant="outline-light">
+          Administrar usuarios
+        </Button>
+        <Button as={Link} to="/admin/productos/criticos" variant="outline-light">
+          Productos críticos
+        </Button>
+        <Button as={Link} to="/admin/reportes" variant="outline-light">
+          Ver reportes
+        </Button>
       </div>
     </section>
   )

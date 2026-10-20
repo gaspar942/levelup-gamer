@@ -1,4 +1,5 @@
 import { Card, Col, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { articulos } from '../data/articulos'
 
 function BlogView() {
@@ -14,10 +15,13 @@ function BlogView() {
               <Card.Body>
                 <span className="etiqueta-categoria">{articulo.fecha}</span>
                 <Card.Title className="mt-1">{articulo.titulo}</Card.Title>
-                <Card.Subtitle className="mb-3 text-muted-gamer">
-                  {articulo.resumen}
-                </Card.Subtitle>
-                <Card.Text>{articulo.contenido}</Card.Text>
+                <Card.Text>{articulo.resumen}</Card.Text>
+                <Link
+                  to={`/blog/${articulo.id}`}
+                  aria-label={`Leer artículo: ${articulo.titulo}`}
+                >
+                  Leer artículo
+                </Link>
               </Card.Body>
             </Card>
           </Col>

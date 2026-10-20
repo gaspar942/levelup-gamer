@@ -13,6 +13,9 @@ import CheckoutView from './views/CheckoutView'
 import CompraExitosaView from './views/CompraExitosaView'
 import PagoErrorView from './views/PagoErrorView'
 import BlogView from './views/BlogView'
+import BlogDetailView from './views/BlogDetailView'
+import NosotrosView from './views/NosotrosView'
+import ContactoView from './views/ContactoView'
 import EventsView from './views/EventsView'
 import RegisterView from './views/RegisterView'
 import LoginView from './views/LoginView'
@@ -22,6 +25,14 @@ import AdminDashboardView from './views/admin/AdminDashboardView'
 import AdminProductosView from './views/admin/AdminProductosView'
 import AdminProductoFormView from './views/admin/AdminProductoFormView'
 import AdminCategoriasView from './views/admin/AdminCategoriasView'
+import AdminOrdenesView from './views/admin/AdminOrdenesView'
+import AdminOrdenDetalleView from './views/admin/AdminOrdenDetalleView'
+import AdminUsuariosView from './views/admin/AdminUsuariosView'
+import AdminUsuarioFormView from './views/admin/AdminUsuarioFormView'
+import AdminUsuarioComprasView from './views/admin/AdminUsuarioComprasView'
+import AdminCriticosView from './views/admin/AdminCriticosView'
+import AdminReportesView from './views/admin/AdminReportesView'
+import AdminPerfilView from './views/admin/AdminPerfilView'
 import {
   agregarAlCarrito,
   cambiarCantidad,
@@ -59,6 +70,7 @@ import { crearOrden, procesarPago } from './utils/checkout'
 import { aplicarOferta } from './utils/ofertas'
 import { agregarResena } from './utils/resenas'
 import { actualizarNombre, autenticar, crearUsuario } from './utils/usuarios'
+import { editarUsuario, eliminarUsuario } from './utils/gestionUsuarios'
 
 function App() {
   const [carrito, setCarrito] = useState(leerCarrito)
@@ -200,6 +212,29 @@ function App() {
     return resultado
   }
 
+  // Edición y baja de usuarios desde el panel de administrador.
+  function modificarUsuario(correo, cambios) {
+    const resultado = editarUsuario(usuarios, correo, cambios)
+
+    if (!resultado.error) {
+      setUsuarios(resultado.usuarios)
+      guardarUsuarios(resultado.usuarios)
+    }
+
+    return resultado
+  }
+
+  function bajaUsuario(correo) {
+    const resultado = eliminarUsuario(usuarios, correo)
+
+    if (!resultado.error) {
+      setUsuarios(resultado.usuarios)
+      guardarUsuarios(resultado.usuarios)
+    }
+
+    return resultado
+  }
+
   function iniciarSesion(correo, contrasena) {
     const encontrado =
       autenticarAdministrador(correo, contrasena) || autenticar(usuarios, correo, contrasena)
@@ -280,6 +315,9 @@ function App() {
           />
           <Route path="/ofertas" element={<OfertasView productos={productos} onAgregar={agregar} />} />
           <Route path="/blog" element={<BlogView />} />
+          <Route path="/blog/:id" element={<BlogDetailView />} />
+          <Route path="/nosotros" element={<NosotrosView />} />
+          <Route path="/contacto" element={<ContactoView />} />
           <Route path="/eventos" element={<EventsView />} />
           <Route path="/registro" element={<RegisterView onRegistrar={registrar} />} />
           <Route path="/login" element={<LoginView onIniciarSesion={iniciarSesion} />} />
@@ -366,6 +404,30 @@ function App() {
                 />
               }
             />
+            <Route path="ordenes" element={<AdminOrdenesView ordenes={ordenes} />} />
+            <Route path="ordenes/:numero" element={<AdminOrdenDetalleView ordenes={ordenes} />} />
+            <Route path="productos/criticos" element={<AdminCriticosView productos={productos} />} />
+            <Route
+              path="usuarios"
+              element={<AdminUsuariosView usuarios={usuarios} onEliminar={bajaUsuario} />}
+            />
+            <Route
+              path="usuarios/nuevo"
+              element={<AdminUsuarioFormView usuarios={usuarios} onCrear={registrar} />}
+            />
+            <Route
+              path="usuarios/:correo"
+              element={<AdminUsuarioFormView usuarios={usuarios} onEditar={modificarUsuario} />}
+            />
+            <Route
+              path="usuarios/:correo/compras"
+              element={<AdminUsuarioComprasView usuarios={usuarios} ordenes={ordenes} />}
+            />
+            <Route
+              path="reportes"
+              element={<AdminReportesView ordenes={ordenes} productos={productos} />}
+            />
+            <Route path="perfil" element={<AdminPerfilView usuario={usuario} />} />
           </Route>
         </Routes>
       </Container>

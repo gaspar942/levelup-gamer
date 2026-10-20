@@ -20,6 +20,8 @@ function AppNavbar({ cantidadCarrito = 0, usuario = null }) {
             <Nav.Link as={NavLink} to="/ofertas">Ofertas</Nav.Link>
             <Nav.Link as={NavLink} to="/blog">Blog</Nav.Link>
             <Nav.Link as={NavLink} to="/eventos">Eventos</Nav.Link>
+            <Nav.Link as={NavLink} to="/nosotros">Nosotros</Nav.Link>
+            <Nav.Link as={NavLink} to="/contacto">Contacto</Nav.Link>
           </Nav>
 
           <Nav>

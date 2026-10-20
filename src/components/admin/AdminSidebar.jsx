@@ -3,8 +3,13 @@ import { NavLink } from 'react-router-dom'
 
 const secciones = [
   { ruta: '/admin', texto: 'Dashboard', exacta: true },
-  { ruta: '/admin/productos', texto: 'Productos' },
+  { ruta: '/admin/ordenes', texto: 'Órdenes' },
+  { ruta: '/admin/productos', texto: 'Productos', exacta: true },
+  { ruta: '/admin/productos/criticos', texto: 'Productos críticos' },
   { ruta: '/admin/categorias', texto: 'Categorías' },
+  { ruta: '/admin/usuarios', texto: 'Usuarios' },
+  { ruta: '/admin/reportes', texto: 'Reportes' },
+  { ruta: '/admin/perfil', texto: 'Perfil' },
 ]
 
 function AdminSidebar({ onCerrarSesion }) {
