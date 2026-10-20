@@ -1,4 +1,5 @@
 import { Button, Table } from 'react-bootstrap'
+import ImagenProducto from '../components/ImagenProducto'
 import { Link } from 'react-router-dom'
 import { aplicarDescuento, calcularTotal } from '../utils/carrito'
 
@@ -35,7 +36,12 @@ function CartView({ carrito, descuento = 0, onQuitar, onCambiarCantidad }) {
         <tbody>
           {carrito.map((item) => (
             <tr key={item.codigo}>
-              <td>{item.nombre}</td>
+              <td>
+                <div className="d-flex align-items-center gap-2">
+                  <ImagenProducto codigo={item.codigo} className="imagen-miniatura" />
+                  <span>{item.nombre}</span>
+                </div>
+              </td>
               <td>${item.precio.toLocaleString('es-CL')}</td>
               <td>
                 <div className="d-flex align-items-center gap-2">

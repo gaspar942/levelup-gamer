@@ -85,6 +85,52 @@ p, .text-muted-gamer {
   letter-spacing: 1px;
 }
 
+.imagen-producto {
+  background: #ffffff;
+  height: 200px;
+  object-fit: contain;
+  padding: 8px;
+  width: 100%;
+}
+
+.imagen-detalle {
+  background: #ffffff;
+  border-radius: 8px;
+  max-height: 360px;
+  object-fit: contain;
+  padding: 8px;
+  width: 100%;
+}
+
+.imagen-miniatura {
+  background: #ffffff;
+  border-radius: 4px;
+  flex-shrink: 0;
+  height: 48px;
+  object-fit: contain;
+  width: 48px;
+}
+
+.sin-imagen {
+  align-items: center;
+  background: var(--borde);
+  color: var(--texto-secundario);
+  display: flex;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.imagen-producto.sin-imagen,
+.imagen-detalle.sin-imagen {
+  height: 200px;
+}
+
+.imagen-miniatura.sin-imagen {
+  font-size: 0;
+  height: 48px;
+  width: 48px;
+}
+
 .banner-gamer {
   align-items: center;
   background: linear-gradient(135deg, var(--superficie), #0a2a4d);

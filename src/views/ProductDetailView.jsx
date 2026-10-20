@@ -1,5 +1,6 @@
-import { Alert, Button } from 'react-bootstrap'
+import { Alert, Button, Col, Row } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
+import ImagenProducto from '../components/ImagenProducto'
 import PrecioProducto from '../components/PrecioProducto'
 import ReviewForm from '../components/ReviewForm'
 import ShareButtons from '../components/ShareButtons'
@@ -35,20 +36,32 @@ function ProductDetailView({
     <section>
       <Link to="/productos">← Volver al catálogo</Link>
 
-      <span className="etiqueta-categoria d-block mt-3">{producto.categoria}</span>
-      <h1>{producto.nombre}</h1>
-      <p>Código: {producto.codigo}</p>
-      {producto.fabricante && <p>Fabricante: {producto.fabricante}</p>}
-      <p>{producto.descripcion}</p>
-      <p className="precio fs-4">
-        <PrecioProducto producto={producto} />
-      </p>
+      <Row className="g-4 mt-1">
+        <Col xs={12} md={5}>
+          <ImagenProducto
+            codigo={producto.codigo}
+            nombre={producto.nombre}
+            className="imagen-detalle"
+          />
+        </Col>
 
-      <Button className="btn-gamer" onClick={() => onAgregar(producto)}>
-        Agregar al carrito
-      </Button>
+        <Col xs={12} md={7}>
+          <span className="etiqueta-categoria d-block mt-3">{producto.categoria}</span>
+          <h1>{producto.nombre}</h1>
+          <p>Código: {producto.codigo}</p>
+          {producto.fabricante && <p>Fabricante: {producto.fabricante}</p>}
+          <p>{producto.descripcion}</p>
+          <p className="precio fs-4">
+            <PrecioProducto producto={producto} />
+          </p>
 
-      <ShareButtons producto={producto} />
+          <Button className="btn-gamer" onClick={() => onAgregar(producto)}>
+            Agregar al carrito
+          </Button>
+
+          <ShareButtons producto={producto} />
+        </Col>
+      </Row>
 
       <h2 className="mt-5">Reseñas</h2>
 

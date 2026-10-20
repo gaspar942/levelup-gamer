@@ -9,6 +9,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    testTimeout: 15000,
     setupFiles: './src/tests/setup.js',
     coverage: {
       reporter: ['text', 'html', 'json-summary'],

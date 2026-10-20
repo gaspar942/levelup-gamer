@@ -1,5 +1,6 @@
 import { Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ImagenProducto from './ImagenProducto'
 import PrecioProducto from './PrecioProducto'
 
 function ProductCard({ producto, onAgregar }) {
@@ -11,6 +12,11 @@ function ProductCard({ producto, onAgregar }) {
 
   return (
     <Card className="card-gamer h-100">
+      <ImagenProducto
+        codigo={producto.codigo}
+        nombre={producto.nombre}
+        className="imagen-producto card-img-top"
+      />
       <Card.Body className="d-flex flex-column">
         <span className="etiqueta-categoria">{producto.categoria}</span>
         <Card.Title className="mt-1">{producto.nombre}</Card.Title>
